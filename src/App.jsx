@@ -1,6 +1,7 @@
 import React from 'react';
 import Particles from './Particles';
 import AboutSection from './components/AboutSection';
+import TeamSection from './components/TeamSection';
 import './index.css';
 
 function App() {
@@ -43,7 +44,9 @@ function App() {
           </div>
         </div>
       </main>
+      
       <AboutSection />
+      <TeamSection />
     </>
   );
 }
