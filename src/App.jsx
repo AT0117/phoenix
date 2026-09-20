@@ -1,7 +1,11 @@
 import React from 'react';
 import Particles from './Particles';
 import AboutSection from './components/AboutSection';
+import EventsSection from './components/EventsSection';
 import TeamSection from './components/TeamSection';
+import ConnectSection from './components/ConnectSection';
+import Navbar from './components/Navbar';
+import ScrollToTop from './components/ScrollToTop';
 import './index.css';
 
 function App() {
@@ -12,23 +16,7 @@ function App() {
       <Particles />
       
       <main className="hero-section">
-        <header className="header">
-          <div className="logo-container">
-            {/* The user will place their logo image in public folder as logo.png */}
-            <img src="/logo.png" alt="Phoenix Club Logo" className="logo-img" />
-            <div className="logo-text">
-              <span className="brand-font">PHOENIX CLUB </span>
-              <span style={{fontWeight: 300}}>KKWIEER</span>
-            </div>
-          </div>
-          
-          <nav className="nav-menu">
-            <a href="#about" className="nav-link">About</a>
-            <a href="#team" className="nav-link">Team</a>
-            <a href="#events" className="nav-link">Events</a>
-            <a href="#connect" className="nav-link">Connect</a>
-          </nav>
-        </header>
+        <Navbar />
         
         <div className="hero-content">
           <div className="hero-text-box">
@@ -46,7 +34,10 @@ function App() {
       </main>
       
       <AboutSection />
+      <EventsSection />
       <TeamSection />
+      <ConnectSection />
+      <ScrollToTop />
     </>
   );
 }

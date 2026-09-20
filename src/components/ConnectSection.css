@@ -1,0 +1,52 @@
+.connect-section {
+  position: relative;
+  min-height: 40vh;
+  padding: 4rem 2rem 6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.connect-header {
+  margin-bottom: 5rem;
+  text-align: center;
+}
+
+.connect-subtitle {
+  font-family: 'Cinzel', serif;
+  font-size: 1.4rem;
+  color: #a0a0a0;
+  margin-top: 1.5rem;
+}
+
+.connect-icons-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.connect-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  filter: drop-shadow(0 0 10px currentColor);
+}
+
+.connect-icon-btn:hover {
+  filter: drop-shadow(0 0 20px currentColor);
+}
+
+@media (max-width: 768px) {
+  .connect-icons-row {
+    gap: 2.5rem;
+  }
+  .connect-subtitle {
+    font-size: 1.1rem;
+  }
+}
