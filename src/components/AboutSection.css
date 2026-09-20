@@ -1,0 +1,212 @@
+.about-section {
+  position: relative;
+  min-height: 100vh;
+  padding: 8rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.about-header {
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ffffff 0%, #ff5e00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  height: 650px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+}
+
+.carousel-slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glass-card {
+  background: rgba(20, 20, 20, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 94, 0, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  position: relative;
+  padding: 0;
+}
+
+.progress-bar-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  z-index: 5;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: #ff8c00;
+  box-shadow: 0 0 10px #ff8c00;
+  width: 0%;
+}
+
+.card-content {
+  padding: 3rem 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.slide-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ff8c00;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  text-shadow: 0 0 20px rgba(255, 94, 0, 0.4);
+}
+
+.slide-content-split {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 4rem;
+}
+
+.slide-left {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-logo {
+  width: 100%;
+  max-width: 250px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 25px rgba(255, 94, 0, 0.6));
+}
+
+.slide-right {
+  flex: 1;
+  font-size: 1.25rem;
+  line-height: 1.8;
+  color: #e0e0e0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+}
+
+.slide-content-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 1.35rem;
+  line-height: 1.9;
+  color: #e0e0e0;
+  padding: 0 3rem;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.slide-content-center strong {
+  color: #ff8c00;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(255, 94, 0, 0.3);
+}
+
+.nav-btn-modern {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  z-index: 20;
+  transition: all 0.3s ease;
+  padding: 1rem;
+}
+
+.nav-btn-modern.left {
+  left: -5rem;
+}
+
+.nav-btn-modern.right {
+  right: -5rem;
+}
+
+.nav-btn-modern:hover {
+  color: #ff8c00;
+  filter: drop-shadow(0 0 10px rgba(255, 94, 0, 0.5));
+}
+
+/* Responsive */
+@media (max-width: 1250px) {
+  .nav-btn-modern.left { left: 0rem; }
+  .nav-btn-modern.right { right: 0rem; }
+  .card-content { padding: 4rem 6rem; } /* more side padding to avoid buttons */
+}
+
+@media (max-width: 968px) {
+  .carousel-container {
+    height: auto;
+    min-height: 650px;
+  }
+  .slide-content-split {
+    flex-direction: column;
+    text-align: center;
+    gap: 2rem;
+  }
+  .about-logo {
+    max-width: 150px;
+  }
+  .card-content {
+    padding: 3rem;
+  }
+  .slide-title {
+    font-size: 2rem;
+  }
+  .slide-content-center, .slide-right {
+    font-size: 1.15rem;
+    padding: 0 1rem;
+  }
+  .nav-btn-modern {
+    display: none; /* Hide side arrows on small screens, users can just rely on auto slide, or we can add swipe gestures */
+  }
+}
