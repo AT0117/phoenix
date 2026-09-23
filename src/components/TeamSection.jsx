@@ -8,7 +8,7 @@ const teamsData = {
     { name: "Urjita Girase", position: "Vice President" },
     { name: "Sakshi Patil", position: "Secretary" },
     { name: "Jagdish Rathod", position: "Joint Secretary" },
-    { name: "Shreyash Shinde", position: "Treasurer" },
+    { name: "Shreyas Shinde", position: "Treasurer" },
     { name: "Aditya Pagar", position: "Co-Treasurer" },
     { name: "Vaibhav Raul", position: "Operations Manager" },
   ],

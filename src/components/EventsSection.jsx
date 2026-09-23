@@ -1,63 +1,101 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { motion } from 'framer-motion';
 import './EventsSection.css';
 
+gsap.registerPlugin(ScrollTrigger);
+
 const pastEvents = [
-  { id: 'celestra', title: "Celestra '26", img: '/celestra.jpg' },
-  { id: 'aisprint', title: "AI & Innovation Sprint 2025", img: '/aisprint.jpg' },
-  { id: 'pbl', title: "Project Based Learning Competition 2025", img: '/pbl.jpg' },
-  { id: 'nexus', title: "Nexus '25 - Department Research Colloquium", img: '/nexus.jpg' }
+  { 
+    id: 'celestra', 
+    title: "Celestra '26", 
+    date: 'March 2026',
+    description: 'The premier annual techfest bringing together innovators, creators, and engineers for a spectacular showcase of talent and technology.',
+    img: '/celestra.jpg' 
+  },
+  { 
+    id: 'aisprint', 
+    title: "AI & Innovation Sprint 2025", 
+    date: 'February 2025',
+    description: 'A 24-hour intensive hackathon focused on building next-generation artificial intelligence solutions and fostering competitive coding.',
+    img: '/aisprint.jpg' 
+  },
+  { 
+    id: 'pbl', 
+    title: "Project Based Learning Competition 2025", 
+    date: 'May 2025',
+    description: 'An exhibition of the most creative and impactful student-led engineering projects across the department, evaluated by industry experts.',
+    img: '/pbl.jpg' 
+  },
+  { 
+    id: 'nexus', 
+    title: "Nexus '25 - Department Research Colloquium", 
+    date: 'November 2025',
+    description: 'An academic symposium dedicated to presenting groundbreaking research and papers by our brightest minds in the AI and Data Science domain.',
+    img: '/nexus.jpg' 
+  }
 ];
 
 const EventsSection = () => {
   const [activeTab, setActiveTab] = useState('past');
-  const [activeIndex, setActiveIndex] = useState(0);
-  
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { amount: 0.3 });
+  const trackRef = useRef(null);
 
-  useEffect(() => {
-    if (!isInView || activeTab !== 'past') return;
-    const timer = setInterval(() => {
-      setActiveIndex(prev => (prev + 1) % pastEvents.length);
-    }, 8000);
-    return () => clearInterval(timer);
-  }, [isInView, activeTab, activeIndex]);
+  useGSAP(() => {
+    // Only apply GSAP scroll trigger if the past events tab is active and refs are available
+    if (activeTab !== 'past' || !trackRef.current || !sectionRef.current) return;
 
-  const nextSlide = () => setActiveIndex((activeIndex + 1) % pastEvents.length);
-  const prevSlide = () => setActiveIndex((activeIndex - 1 + pastEvents.length) % pastEvents.length);
+    // Calculate total horizontal scroll distance
+    // We want the track to move completely to the left, minus exactly one viewport width so the last card remains on screen.
+    const scrollAmount = trackRef.current.scrollWidth - window.innerWidth;
+
+    const tl = gsap.to(trackRef.current, {
+      x: -scrollAmount,
+      ease: "none",
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top top", // Pin exactly when the container reaches the top of the viewport
+        end: () => `+=${scrollAmount}`, // The pinning distance matches the horizontal travel distance
+        pin: true,
+        scrub: 0.1, // Tightened scrubbing so it unpins instantly without lag/wasted scroll space
+        invalidateOnRefresh: true, // Recalculate if window resizes
+      }
+    });
+
+    return () => {
+      // Clean up scroll triggers when unmounting or switching tabs
+      tl.kill();
+      ScrollTrigger.getAll().forEach(t => t.kill());
+    };
+  }, [activeTab]); // Re-run effect if activeTab changes
 
   return (
-    <motion.section 
+    <section 
       id="events" 
-      className="events-section"
+      className={`events-section-wrapper ${activeTab === 'past' ? 'is-pinned' : ''}`}
       ref={sectionRef}
-      initial={{ opacity: 0, y: 100 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: 1, ease: "easeOut" }}
     >
-      <div className="events-header">
+      <div className="events-header-fixed">
         <h2 className="section-title">Events</h2>
+        <div className="events-tabs">
+          <button 
+            className={`team-tab-btn ${activeTab === 'past' ? 'active' : ''}`}
+            onClick={() => setActiveTab('past')}
+          >
+            Past Events
+          </button>
+          <button 
+            className={`team-tab-btn ${activeTab === 'upcoming' ? 'active' : ''}`}
+            onClick={() => setActiveTab('upcoming')}
+          >
+            Upcoming Events
+          </button>
+        </div>
       </div>
 
-      <div className="events-tabs">
-        <button 
-          className={`team-tab-btn ${activeTab === 'past' ? 'active' : ''}`}
-          onClick={() => setActiveTab('past')}
-        >
-          Past Events
-        </button>
-        <button 
-          className={`team-tab-btn ${activeTab === 'upcoming' ? 'active' : ''}`}
-          onClick={() => setActiveTab('upcoming')}
-        >
-          Upcoming Events
-        </button>
-      </div>
-
-      <div className="events-content-container">
+      <div className="events-main-content">
         {activeTab === 'upcoming' ? (
           <motion.div 
             className="coming-soon-box"
@@ -69,77 +107,27 @@ const EventsSection = () => {
             <p>Stay tuned for exciting upcoming events!</p>
           </motion.div>
         ) : (
-          <div className="coverflow-carousel">
-            <button className="nav-btn-modern left" onClick={prevSlide} aria-label="Previous event">
-              <ChevronLeft size={48} strokeWidth={1.5} />
-            </button>
-            
-            <div className="carousel-track">
-              {pastEvents.map((event, index) => {
-                let diff = (index - activeIndex + pastEvents.length) % pastEvents.length;
-                if (diff > 2) diff -= pastEvents.length;
-                
-                const isCenter = diff === 0;
-                const isLeft = diff === -1;
-                const isRight = diff === 1;
-                const isHidden = diff === 2 || diff < -1 || diff > 1;
-
-                return (
-                  <motion.div
-                    key={event.id}
-                    className="coverflow-card"
-                    animate={{
-                      x: isLeft ? '-65%' : isRight ? '65%' : '0%',
-                      scale: isCenter ? 1 : 0.8,
-                      filter: isCenter ? 'blur(0px)' : 'blur(8px)',
-                      opacity: isHidden ? 0 : isCenter ? 1 : 0.4,
-                      zIndex: isCenter ? 10 : isHidden ? 0 : 5
-                    }}
-                    transition={{ duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
-                    onClick={() => setActiveIndex(index)}
-                  >
-                    <div className="card-image-wrapper">
-                      <img src={event.img} alt={event.title} className="event-img" />
-                      <div className={`event-title-overlay ${isCenter ? 'active' : ''}`}>
-                        <h4>{event.title}</h4>
-                      </div>
-                      
-                      {/* Fiery Progress Border */}
-                      {isCenter && isInView && (
-                        <svg className="progress-border-svg" width="100%" height="100%" preserveAspectRatio="none">
-                          <defs>
-                            <linearGradient id="fiery-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                              <stop offset="0%" stopColor="#ffea00" />
-                              <stop offset="50%" stopColor="#ff5e00" />
-                              <stop offset="100%" stopColor="#ff0000" />
-                            </linearGradient>
-                          </defs>
-                          <motion.rect
-                            key={`${activeIndex}-${isInView}`}
-                            x="1.5" y="1.5" width="calc(100% - 3px)" height="calc(100% - 3px)"
-                            rx="18.5" ry="18.5"
-                            fill="none"
-                            stroke="url(#fiery-gradient)"
-                            strokeWidth="3"
-                            initial={{ pathLength: 0 }}
-                            animate={{ pathLength: 1 }}
-                            transition={{ duration: 8, ease: "linear" }}
-                          />
-                        </svg>
-                      )}
+          <div className="gsap-track-viewport">
+            <div className="gsap-track" ref={trackRef}>
+              {pastEvents.map((event) => (
+                <div key={event.id} className="gsap-slide">
+                  <div className="modern-event-card">
+                    <div className="modern-img-container">
+                      <img src={event.img} alt={event.title} className="modern-event-img" />
                     </div>
-                  </motion.div>
-                );
-              })}
+                    <div className="modern-event-overlay">
+                      <span className="modern-event-date">{event.date}</span>
+                      <h4 className="modern-event-title">{event.title}</h4>
+                      <p className="modern-event-desc">{event.description}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-
-            <button className="nav-btn-modern right" onClick={nextSlide} aria-label="Next event">
-              <ChevronRight size={48} strokeWidth={1.5} />
-            </button>
           </div>
         )}
       </div>
-    </motion.section>
+    </section>
   );
 };
 

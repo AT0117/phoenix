@@ -1,183 +1,208 @@
-.events-section {
+/* EventsSection.css */
+
+.events-section-wrapper {
   position: relative;
+  width: 100%;
+  /* Height will be managed by GSAP pinning, but we set a default height */
   min-height: 100vh;
-  padding: 8rem 2rem;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Hide the horizontal overflow of the track */
+}
+
+/* When not pinned (e.g., upcoming tab), just act like a normal section */
+.events-section-wrapper:not(.is-pinned) {
+  height: auto;
+  min-height: 80vh;
+  padding: 4rem 0;
+}
+
+.events-header-fixed {
+  padding-top: 5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 1;
+  z-index: 10;
+  width: 100%;
 }
 
 .events-header {
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   text-align: center;
 }
 
 .events-tabs {
   display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-bottom: 5rem;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  z-index: 10;
 }
 
-.events-content-container {
-  width: 100%;
-  max-width: 1400px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 500px;
-}
-
-.coming-soon-box {
-  background: rgba(20, 20, 20, 0.6);
-  border: 1px solid rgba(255, 94, 0, 0.3);
-  border-radius: 24px;
-  padding: 5rem;
-  text-align: center;
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 94, 0, 0.1);
-}
-
-.coming-soon-box h3 {
+.team-tab-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #a0a0a0;
+  padding: 0.8rem 1.5rem;
+  border-radius: 30px;
   font-family: 'Cinzel', serif;
-  font-size: 3.5rem;
-  color: #ff8c00;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  text-shadow: 0 0 15px rgba(255, 94, 0, 0.5);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.coming-soon-box p {
-  font-size: 1.5rem;
-  color: #e0e0e0;
+.team-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
 }
 
-.coverflow-carousel {
-  position: relative;
-  width: 100%;
-  height: 600px;
+.team-tab-btn.active {
+  background: #ff5e00;
+  color: #fff;
+  border-color: #ff8c00;
+  box-shadow: 0 0 15px rgba(255, 94, 0, 0.5);
+}
+
+.events-main-content {
+  flex: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
+  width: 100%;
 }
 
-.carousel-track {
-  position: relative;
-  width: 700px;
-  height: 450px;
+.gsap-track-viewport {
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 
-.coverflow-card {
-  position: absolute;
-  width: 100%;
-  height: 100%;
+.gsap-track {
+  display: flex;
+  gap: 2rem; /* Reduced gap between cards */
+  padding: 0 5vw; /* Start inset so it looks like a continuous slider */
+  width: max-content;
+}
+
+.gsap-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modern-event-card {
+  width: 85vw;
+  max-width: 1000px;
+  height: 70vh;
+  position: relative;
   border-radius: 20px;
   overflow: hidden;
-  cursor: pointer;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  background: #111;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
 }
 
-.card-image-wrapper {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.event-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-  opacity: 0.8;
-}
-
-.coverflow-card:hover .event-img {
-  transform: scale(1.05);
-  opacity: 1;
-}
-
-.event-title-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: 3rem 2rem 2rem;
-  background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0) 100%);
-  opacity: 0;
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  transform: translateY(20px);
-}
-
-.event-title-overlay.active {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.event-title-overlay h4 {
-  font-family: 'Cinzel', serif;
-  color: #fff;
-  font-size: 1.8rem;
-  font-weight: 700;
-  text-shadow: 0 2px 10px rgba(255, 94, 0, 0.8);
-  margin: 0;
-  text-align: center;
-}
-
-/* Re-using the team-tab-btn logic in this container */
-.events-tabs .team-tab-btn {
-  font-family: 'Cinzel', serif;
-}
-
-@media (max-width: 1024px) {
-  .carousel-track {
-    width: 500px;
-    height: 350px;
-  }
-}
-
-@media (max-width: 768px) {
-  .carousel-track {
-    width: 300px;
-    height: 400px;
-  }
-  .event-title-overlay h4 {
-    font-size: 1.25rem;
-  }
-  .coverflow-carousel .nav-btn-modern.left {
-    left: 0rem;
-    z-index: 20;
-  }
-  .coverflow-carousel .nav-btn-modern.right {
-    right: 0rem;
-    z-index: 20;
-  }
-  .coming-soon-box h3 {
-    font-size: 2.2rem;
-  }
-  .coming-soon-box p {
-    font-size: 1.1rem;
-  }
-}
-
-/* SVG Progress Border Styles */
-.progress-border-svg {
+.modern-img-container {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none;
-  z-index: 20;
+  z-index: 1;
 }
 
-.progress-border-svg rect {
-  filter: drop-shadow(0 0 10px rgba(255, 140, 0, 0.8));
+.modern-event-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.modern-event-card:hover .modern-event-img {
+  transform: scale(1.08);
+}
+
+.modern-event-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+  padding: 8rem 3rem 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 40%, transparent 100%);
+  pointer-events: none; /* Let hover events pass through to the image */
+}
+
+.modern-event-date {
+  font-family: 'Rajdhani', sans-serif;
+  color: #ff5e00;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.modern-event-title {
+  font-family: 'Cinzel', serif;
+  font-size: 2.8rem;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  line-height: 1.1;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+}
+
+.modern-event-desc {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.3rem;
+  color: #d0d0d0;
+  line-height: 1.5;
+  max-width: 80%;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+}
+
+/* Coming Soon Box */
+.coming-soon-box {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  text-align: center;
+  background: rgba(20, 20, 20, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.coming-soon-box h3 {
+  font-family: 'Cinzel', serif;
+  font-size: 2.5rem;
+  color: #ff5e00;
+  margin-bottom: 1rem;
+}
+
+.coming-soon-box p {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.25rem;
+  color: #a0a0a0;
+}
+
+@media (max-width: 768px) {
+  .modern-event-card {
+    height: 70vh;
+  }
+  .modern-event-overlay {
+    padding: 1.5rem;
+  }
+  .modern-event-title {
+    font-size: 1.6rem;
+  }
+  .modern-event-desc {
+    font-size: 1rem;
+  }
 }
