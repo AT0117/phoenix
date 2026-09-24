@@ -133,8 +133,32 @@
 
 
 @media (max-width: 768px) {
+  .events-section-wrapper {
+    min-height: auto;
+    padding: 2rem 0;
+  }
+  .gsap-track-viewport {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2rem; /* space for scrollbar */
+  }
+  
+  /* Hide scrollbar for a cleaner look, but keep functionality */
+  .gsap-track-viewport::-webkit-scrollbar {
+    display: none;
+  }
+  .gsap-track-viewport {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  .gsap-slide {
+    scroll-snap-align: center;
+  }
   .modern-event-card {
     height: 70vh;
+    width: 90vw; /* Slightly wider on mobile for better visibility */
   }
   .modern-event-overlay {
     padding: 1.5rem;
@@ -144,5 +168,6 @@
   }
   .modern-event-desc {
     font-size: 1rem;
+    max-width: 100%;
   }
 }

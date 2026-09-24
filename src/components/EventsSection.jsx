@@ -45,6 +45,10 @@ const EventsSection = () => {
   useGSAP(() => {
     if (!trackRef.current || !sectionRef.current) return;
 
+    // Detect mobile device to disable heavy GSAP scrubbing
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    if (isMobile) return;
+
     // Calculate total horizontal scroll distance
     const scrollAmount = trackRef.current.scrollWidth - window.innerWidth;
 

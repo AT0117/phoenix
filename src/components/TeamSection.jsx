@@ -144,6 +144,7 @@ const TeamSection = () => {
                 });
               }}
               onSetTranslate={(swiper, translate) => {
+                if (window.innerWidth <= 768) return; // Skip heavy DOM math on mobile
                 for (let i = 0; i < swiper.slides.length; i++) {
                   const slide = swiper.slides[i];
                   const slideProgress = slide.progress; 
@@ -156,6 +157,7 @@ const TeamSection = () => {
                 }
               }}
               onSetTransition={(swiper, transition) => {
+                if (window.innerWidth <= 768) return;
                 for (let i = 0; i < swiper.slides.length; i++) {
                   const slide = swiper.slides[i];
                   const inner = slide.querySelector('.coverflow-card');

@@ -219,6 +219,11 @@
 }
 
 @media (max-width: 768px) {
+  /* Remove blur on mobile for massive performance gain */
+  .team-slide:not(.swiper-slide-active) {
+    filter: brightness(0.5);
+  }
+
   .team-slide {
     width: 260px;
     height: 400px;
