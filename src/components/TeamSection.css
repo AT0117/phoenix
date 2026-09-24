@@ -166,19 +166,30 @@
   box-shadow: none !important;
 }
 
-/* Customizing Swiper Pagination */
-.swiper-pagination-bullet {
-  background: rgba(255, 255, 255, 0.3) !important;
-  width: 10px !important;
-  height: 10px !important;
-  opacity: 1 !important;
-  transition: all 0.3s ease;
+/* Customizing Team Pagination */
+.custom-team-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 30px;
+  padding-bottom: 20px;
 }
 
-.swiper-pagination-bullet-active {
-  background: #ff5e00 !important; /* Fiery orange active dot */
-  width: 30px !important;
-  border-radius: 5px !important;
+.custom-pagination-dot {
+  background: rgba(255, 255, 255, 0.3);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  opacity: 1;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.custom-pagination-dot.active {
+  background: #ff5e00; /* Fiery orange active dot */
+  width: 30px;
+  border-radius: 5px;
   box-shadow: 0 0 10px rgba(255, 94, 0, 0.8);
 }
 

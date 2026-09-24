@@ -113,7 +113,6 @@ const TeamSection = () => {
               centeredSlides={true}
               slidesPerView={'auto'}
               loop={teamsData[activeTeam].length >= 3}
-              loopedSlides={teamsData[activeTeam].length}
               autoplay={{
                 delay: 5000,
                 disableOnInteraction: false,
@@ -125,10 +124,25 @@ const TeamSection = () => {
                 modifier: 1, 
                 slideShadows: false, 
               }}
-              pagination={{ clickable: true }}
               navigation={true}
-              modules={[EffectCoverflow, Autoplay, Pagination, Navigation]}
+              modules={[EffectCoverflow, Autoplay, Navigation]}
               watchSlidesProgress={true}
+              onSlideChange={(swiper) => {
+                const originalLength = teamsData[activeTeam].length;
+                const safeRealIndex = swiper.realIndex || 0;
+                const calculatedIndex = originalLength > 0 ? safeRealIndex % originalLength : 0;
+                
+                // Disabling React state update for pagination to prevent re-renders of the Swiper component
+                // We'll directly manipulate the DOM of our custom dots for massive performance
+                const dots = document.querySelectorAll('.custom-pagination-dot');
+                dots.forEach((dot, idx) => {
+                  if (idx === calculatedIndex) {
+                    dot.classList.add('active');
+                  } else {
+                    dot.classList.remove('active');
+                  }
+                });
+              }}
               onSetTranslate={(swiper, translate) => {
                 for (let i = 0; i < swiper.slides.length; i++) {
                   const slide = swiper.slides[i];
@@ -167,7 +181,16 @@ const TeamSection = () => {
                 </defs>
               </svg>
 
-              {teamsData[activeTeam].map((member, index) => (
+              {(() => {
+                const members = teamsData[activeTeam];
+                let displayMembers = [...members];
+                
+                // Duplicate array to guarantee flawless left/right looping
+                if (members.length >= 3 && members.length < 8) {
+                  displayMembers = [...displayMembers, ...members];
+                }
+                
+                return displayMembers.map((member, index) => (
                   <SwiperSlide key={index} className="team-slide">
                     <div className="coverflow-card">
                       
@@ -189,8 +212,24 @@ const TeamSection = () => {
                       </div>
                     </div>
                   </SwiperSlide>
-                ))}
+                ));
+              })()}
             </Swiper>
+
+            {/* Custom Pagination Container */}
+            <div className="custom-team-pagination">
+              {teamsData[activeTeam].map((_, idx) => (
+                <div 
+                  key={idx}
+                  className={`custom-pagination-dot ${idx === 0 ? 'active' : ''}`}
+                  onClick={() => {
+                    if (swiperInstance) {
+                      swiperInstance.slideToLoop(idx);
+                    }
+                  }}
+                />
+              ))}
+            </div>
           </motion.div>
         </AnimatePresence>
       </div>
