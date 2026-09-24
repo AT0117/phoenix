@@ -1,13 +1,23 @@
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import './Navbar.css';
+
+gsap.registerPlugin(ScrollToPlugin);
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
+
+  const handleNavClick = (e, targetId) => {
+    e.preventDefault();
+    closeMenu();
+    gsap.to(window, { duration: 1, scrollTo: targetId, ease: "power2.inOut" });
+  };
 
   return (
     <header className="header">
@@ -21,10 +31,10 @@ const Navbar = () => {
       
       {/* Desktop Menu */}
       <nav className="nav-menu desktop-nav">
-        <a href="#about" className="nav-link">About</a>
-        <a href="#events" className="nav-link">Events</a>
-        <a href="#team" className="nav-link">Team</a>
-        <a href="#connect" className="nav-link">Connect</a>
+        <a href="#about" onClick={(e) => handleNavClick(e, '#about')} className="nav-link">About</a>
+        <a href="#events" onClick={(e) => handleNavClick(e, '#events')} className="nav-link">Events</a>
+        <a href="#team" onClick={(e) => handleNavClick(e, '#team')} className="nav-link">Team</a>
+        <a href="#connect" onClick={(e) => handleNavClick(e, '#connect')} className="nav-link">Connect</a>
       </nav>
 
       {/* Mobile Hamburger Icon */}
@@ -43,10 +53,10 @@ const Navbar = () => {
             transition={{ duration: 0.3 }}
           >
             <nav className="mobile-nav-menu">
-              <a href="#about" className="nav-link" onClick={closeMenu}>About</a>
-              <a href="#events" className="nav-link" onClick={closeMenu}>Events</a>
-              <a href="#team" className="nav-link" onClick={closeMenu}>Team</a>
-              <a href="#connect" className="nav-link" onClick={closeMenu}>Connect</a>
+              <a href="#about" className="nav-link" onClick={(e) => handleNavClick(e, '#about')}>About</a>
+              <a href="#events" className="nav-link" onClick={(e) => handleNavClick(e, '#events')}>Events</a>
+              <a href="#team" className="nav-link" onClick={(e) => handleNavClick(e, '#team')}>Team</a>
+              <a href="#connect" className="nav-link" onClick={(e) => handleNavClick(e, '#connect')}>Connect</a>
             </nav>
           </motion.div>
         )}

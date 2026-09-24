@@ -13,6 +13,10 @@ const HeroSection = () => {
   const birdRef = useRef(null);
 
   useGSAP(() => {
+    // Disable heavy scaling animation on mobile
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    if (isMobile) return;
+
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
@@ -20,7 +24,6 @@ const HeroSection = () => {
         end: "+=150%", // Pin for 150vh of scrolling
         pin: true,
         scrub: 1, // Smooth scrubbing
-        // markers: true // for debugging if needed
       }
     });
 

@@ -66,6 +66,18 @@ const EventsSection = () => {
     });
   }, { scope: sectionRef });
 
+  const scrollLeft = () => {
+    if (trackRef.current) {
+      trackRef.current.parentElement.scrollBy({ left: -window.innerWidth * 0.85, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    if (trackRef.current) {
+      trackRef.current.parentElement.scrollBy({ left: window.innerWidth * 0.85, behavior: 'smooth' });
+    }
+  };
+
   return (
     <section 
       id="events" 
@@ -77,6 +89,10 @@ const EventsSection = () => {
       </div>
 
       <div className="events-main-content">
+        <button className="mobile-event-nav left" onClick={scrollLeft}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+
         <div className="gsap-track-viewport">
           <div className="gsap-track" ref={trackRef}>
             {pastEvents.map((event) => (
@@ -95,6 +111,10 @@ const EventsSection = () => {
             ))}
           </div>
         </div>
+
+        <button className="mobile-event-nav right" onClick={scrollRight}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
       </div>
     </section>
   );

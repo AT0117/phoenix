@@ -207,6 +207,12 @@
     padding: 0 1rem;
   }
   .nav-btn-modern {
-    display: none; /* Hide side arrows on small screens, users can just rely on auto slide, or we can add swipe gestures */
+    padding: 0.5rem;
   }
+  .nav-btn-modern svg {
+    width: 32px;
+    height: 32px;
+  }
+  .nav-btn-modern.left { left: 0rem; }
+  .nav-btn-modern.right { right: 0rem; }
 }
