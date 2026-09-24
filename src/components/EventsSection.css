@@ -9,13 +9,8 @@
   display: flex;
   flex-direction: column;
   overflow: hidden; /* Hide the horizontal overflow of the track */
-}
-
-/* When not pinned (e.g., upcoming tab), just act like a normal section */
-.events-section-wrapper:not(.is-pinned) {
-  height: auto;
-  min-height: 80vh;
-  padding: 4rem 0;
+  pointer-events: auto; /* Restore clicks inside the pinned GSAP wrapper */
+  padding: 4rem 0; /* Add padding directly to wrapper */
 }
 
 .events-header-fixed {
@@ -32,37 +27,7 @@
   text-align: center;
 }
 
-.events-tabs {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  z-index: 10;
-}
 
-.team-tab-btn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #a0a0a0;
-  padding: 0.8rem 1.5rem;
-  border-radius: 30px;
-  font-family: 'Cinzel', serif;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.team-tab-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-}
-
-.team-tab-btn.active {
-  background: #ff5e00;
-  color: #fff;
-  border-color: #ff8c00;
-  box-shadow: 0 0 15px rgba(255, 94, 0, 0.5);
-}
 
 .events-main-content {
   flex: 1;
@@ -165,32 +130,7 @@
   text-shadow: 0 2px 8px rgba(0,0,0,0.8);
 }
 
-/* Coming Soon Box */
-.coming-soon-box {
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 4rem 2rem;
-  text-align: center;
-  background: rgba(20, 20, 20, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
 
-.coming-soon-box h3 {
-  font-family: 'Cinzel', serif;
-  font-size: 2.5rem;
-  color: #ff5e00;
-  margin-bottom: 1rem;
-}
-
-.coming-soon-box p {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 1.25rem;
-  color: #a0a0a0;
-}
 
 @media (max-width: 768px) {
   .modern-event-card {

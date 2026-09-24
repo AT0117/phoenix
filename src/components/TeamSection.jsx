@@ -1,5 +1,11 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { EffectCoverflow, Autoplay, Navigation, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 import './TeamSection.css';
 
 const teamsData = {
@@ -49,10 +55,25 @@ const teamsData = {
 
 const TeamSection = () => {
   const [activeTeam, setActiveTeam] = useState("Executives");
+  const [swiperInstance, setSwiperInstance] = useState(null);
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { amount: 0.1 });
+
+  // Strictly control autoplay based on viewport visibility
+  useEffect(() => {
+    if (swiperInstance) {
+      if (isInView) {
+        swiperInstance.autoplay.start();
+      } else {
+        swiperInstance.autoplay.stop();
+      }
+    }
+  }, [isInView, swiperInstance]);
 
   return (
     <motion.section 
-      id="team" 
+      id="team"
+      ref={sectionRef}
       className="team-section"
       initial={{ opacity: 0, y: 100 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -75,40 +96,104 @@ const TeamSection = () => {
         ))}
       </div>
 
-      <motion.div layout className="team-grid-container">
+      <div className="team-swiper-container">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTeam}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="team-grid"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.4 }}
+            className="swiper-wrapper-animator"
           >
-            {teamsData[activeTeam].map((member, index) => (
-              <motion.div 
-                key={index} 
-                className="member-card"
-                whileHover={{ scale: 1.05, y: -5 }}
-              >
-                <div className="member-avatar">
-                  <div className="avatar-placeholder">
-                    <img 
-                      src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" 
-                      alt={`${member.name} Profile`} 
-                      className="placeholder-img" 
-                    />
-                  </div>
-                </div>
-                <div className="member-info">
-                  <h4 className="member-name">{member.name}</h4>
-                  <p className="member-position">{member.position}</p>
-                </div>
-              </motion.div>
-            ))}
+            <Swiper
+              onSwiper={setSwiperInstance}
+              effect={'coverflow'}
+              grabCursor={true}
+              centeredSlides={true}
+              slidesPerView={'auto'}
+              loop={teamsData[activeTeam].length >= 3}
+              loopedSlides={teamsData[activeTeam].length}
+              autoplay={{
+                delay: 5000,
+                disableOnInteraction: false,
+              }}
+              coverflowEffect={{
+                rotate: 50,
+                stretch: 0,
+                depth: 150, 
+                modifier: 1, 
+                slideShadows: false, 
+              }}
+              pagination={{ clickable: true }}
+              navigation={true}
+              modules={[EffectCoverflow, Autoplay, Pagination, Navigation]}
+              watchSlidesProgress={true}
+              onSetTranslate={(swiper, translate) => {
+                for (let i = 0; i < swiper.slides.length; i++) {
+                  const slide = swiper.slides[i];
+                  const slideProgress = slide.progress; 
+                  const y = Math.pow(Math.abs(slideProgress), 2) * -80; 
+                  
+                  const inner = slide.querySelector('.coverflow-card');
+                  if (inner) {
+                    inner.style.transform = `translateY(${y}px)`;
+                  }
+                }
+              }}
+              onSetTransition={(swiper, transition) => {
+                for (let i = 0; i < swiper.slides.length; i++) {
+                  const slide = swiper.slides[i];
+                  const inner = slide.querySelector('.coverflow-card');
+                  if (inner) {
+                    inner.style.transitionDuration = `${transition}ms`;
+                  }
+                }
+              }}
+              onAutoplayTimeLeft={(s, time, progress) => {
+                if (s.el) {
+                  s.el.style.setProperty('--autoplay-progress', progress);
+                }
+              }}
+              className="team-swiper"
+            >
+              {/* Define the gradient for the SVG border */}
+              <svg style={{ width: 0, height: 0, position: 'absolute' }}>
+                <defs>
+                  <linearGradient id="card-timer-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#ffffff" />
+                    <stop offset="100%" stopColor="#ff5e00" />
+                  </linearGradient>
+                </defs>
+              </svg>
+
+              {teamsData[activeTeam].map((member, index) => (
+                  <SwiperSlide key={index} className="team-slide">
+                    <div className="coverflow-card">
+                      
+                      {/* Perimeter Progress Border */}
+                      <svg className="card-progress-svg" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="2" width="calc(100% - 4px)" height="calc(100% - 4px)" rx="18" ry="18" pathLength="1" />
+                      </svg>
+
+                      <div className="coverflow-avatar-wrapper">
+                        <img 
+                          src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" 
+                          alt={`${member.name} Profile`} 
+                          className="coverflow-avatar-img" 
+                        />
+                      </div>
+                      <div className="coverflow-info">
+                        <h4 className="coverflow-name">{member.name.toUpperCase()}</h4>
+                        <p className="coverflow-position">{member.position.toUpperCase()}</p>
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                ))}
+            </Swiper>
           </motion.div>
         </AnimatePresence>
-      </motion.div>
+      </div>
     </motion.section>
   );
 };

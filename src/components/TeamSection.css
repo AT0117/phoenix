@@ -1,15 +1,18 @@
+/* TeamSection.css */
+
 .team-section {
-  position: relative;
-  min-height: 100vh;
-  padding: 8rem 2rem;
+  padding: 6rem 2rem;
+  background: transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 1;
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
 }
 
 .team-header {
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   text-align: center;
 }
 
@@ -19,7 +22,7 @@
   justify-content: center;
   gap: 1rem;
   margin-bottom: 4rem;
-  max-width: 1200px;
+  max-width: 1000px;
 }
 
 .team-tab-btn {
@@ -29,112 +32,202 @@
   padding: 0.8rem 1.5rem;
   border-radius: 30px;
   font-family: 'Cinzel', serif;
-  font-size: 1.15rem;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  letter-spacing: 0.5px;
 }
 
 .team-tab-btn:hover {
   background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
 }
 
 .team-tab-btn.active {
-  background: rgba(255, 94, 0, 0.15);
-  border-color: #ff5e00;
-  color: #ff5e00;
-  box-shadow: 0 0 15px rgba(255, 94, 0, 0.3);
+  background: #ff5e00;
+  color: #fff;
+  border-color: #ff8c00;
+  box-shadow: 0 0 15px rgba(255, 94, 0, 0.5);
 }
 
-.team-grid-container {
+.team-swiper-container {
   width: 100%;
   max-width: 1200px;
-  min-height: 400px;
+  position: relative;
 }
 
-.team-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2.5rem;
+.swiper-wrapper-animator {
   width: 100%;
 }
 
-.member-card {
-  width: 280px;
-  background: rgba(20, 20, 20, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 2.5rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+.team-swiper {
+  width: 100%;
+  padding-top: 50px !important;
+  padding-bottom: 80px !important; /* Space for pagination */
 }
 
-.member-card:hover {
-  border-color: rgba(255, 94, 0, 0.4);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 25px rgba(255, 94, 0, 0.15);
+.team-slide {
+  width: 320px; /* Width of the central focused card */
+  height: 480px;
+  transition: all 0.3s ease;
 }
 
-.member-avatar {
-  margin-bottom: 1.5rem;
+/* Blur and darken non-active slides */
+/* Blur and darken non-active slides */
+.team-slide:not(.swiper-slide-active) {
+  filter: blur(4px) brightness(0.5);
+  opacity: 0.8;
 }
 
-.avatar-placeholder {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #111 0%, #222 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid rgba(255, 94, 0, 0.3);
-  box-shadow: inset 0 0 15px rgba(0,0,0,0.5), 0 0 15px rgba(255, 94, 0, 0.2);
-  overflow: hidden;
-}
-
-.placeholder-img {
+.coverflow-card {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  filter: grayscale(100%) opacity(0.8);
+  background: rgba(15, 15, 15, 0.95);
+  border: 1px solid rgba(255, 94, 0, 0.4);
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9), 0 0 20px rgba(255, 94, 0, 0.2);
 }
 
-.member-name {
+.coverflow-avatar-wrapper {
+  flex: 1;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  overflow: hidden;
+  padding-top: 2rem;
+  border-bottom: 1px solid rgba(255, 94, 0, 0.3);
+}
+
+.coverflow-avatar-img {
+  width: 80%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 10px rgba(0,0,0,0.5));
+}
+
+.coverflow-info {
+  height: 140px;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1.5rem;
+  text-align: center;
+}
+
+.coverflow-name {
   font-family: 'Cinzel', serif;
-  font-size: 1.35rem;
-  font-weight: 700;
+  font-size: 1.6rem;
+  font-weight: 800;
   color: #ffffff;
   margin-bottom: 0.5rem;
   letter-spacing: 1px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.8);
 }
 
-.member-position {
+.coverflow-position {
   font-family: 'Cinzel', serif;
-  font-size: 1.05rem;
-  color: #a0a0a0;
+  font-size: 1.1rem;
+  color: #ff5e00; 
   font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+/* Customizing Swiper Navigation Arrows (Manual Controls) */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #ffffff !important;
+  background: transparent !important;
+  width: 50px !important;
+  height: 50px !important;
+  transition: all 0.3s ease;
+  z-index: 100 !important;
+  pointer-events: auto !important;
+  box-shadow: none !important;
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  font-size: 2rem !important;
+  font-weight: bold;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  color: #ff8c00 !important;
+  transform: scale(1.2);
+  text-shadow: 0 0 15px rgba(255, 140, 0, 0.8);
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Customizing Swiper Pagination */
+.swiper-pagination-bullet {
+  background: rgba(255, 255, 255, 0.3) !important;
+  width: 10px !important;
+  height: 10px !important;
+  opacity: 1 !important;
+  transition: all 0.3s ease;
+}
+
+.swiper-pagination-bullet-active {
+  background: #ff5e00 !important; /* Fiery orange active dot */
+  width: 30px !important;
+  border-radius: 5px !important;
+  box-shadow: 0 0 10px rgba(255, 94, 0, 0.8);
+}
+
+/* Perimeter Autoplay Progress */
+.card-progress-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.swiper-slide-active .card-progress-svg {
+  opacity: 1; /* Show only on active slide */
+}
+
+.card-progress-svg rect {
+  fill: none;
+  stroke: url(#card-timer-gradient);
+  stroke-width: 4px;
+  stroke-dasharray: 1;
+  stroke-dashoffset: var(--autoplay-progress, 1);
 }
 
 @media (max-width: 768px) {
-  .team-grid {
-    gap: 1.5rem;
+  .team-slide {
+    width: 260px;
+    height: 400px;
   }
-  .member-card {
-    width: 240px;
-    padding: 2rem 1rem;
+  .coverflow-info {
+    height: 120px;
+  }
+  .coverflow-name {
+    font-size: 1.2rem;
+  }
+  .coverflow-position {
+    font-size: 0.85rem;
+  }
+  .swiper-button-next,
+  .swiper-button-prev {
+    width: 35px !important;
+    height: 35px !important;
+  }
+  .swiper-button-next:after,
+  .swiper-button-prev:after {
+    font-size: 1.5rem !important;
   }
 }

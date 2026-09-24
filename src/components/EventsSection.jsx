@@ -39,19 +39,16 @@ const pastEvents = [
 ];
 
 const EventsSection = () => {
-  const [activeTab, setActiveTab] = useState('past');
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
 
   useGSAP(() => {
-    // Only apply GSAP scroll trigger if the past events tab is active and refs are available
-    if (activeTab !== 'past' || !trackRef.current || !sectionRef.current) return;
+    if (!trackRef.current || !sectionRef.current) return;
 
     // Calculate total horizontal scroll distance
-    // We want the track to move completely to the left, minus exactly one viewport width so the last card remains on screen.
     const scrollAmount = trackRef.current.scrollWidth - window.innerWidth;
 
-    const tl = gsap.to(trackRef.current, {
+    gsap.to(trackRef.current, {
       x: -scrollAmount,
       ease: "none",
       scrollTrigger: {
@@ -63,69 +60,37 @@ const EventsSection = () => {
         invalidateOnRefresh: true, // Recalculate if window resizes
       }
     });
-
-    return () => {
-      // Clean up scroll triggers when unmounting or switching tabs
-      tl.kill();
-      ScrollTrigger.getAll().forEach(t => t.kill());
-    };
-  }, [activeTab]); // Re-run effect if activeTab changes
+  }, { scope: sectionRef });
 
   return (
     <section 
       id="events" 
-      className={`events-section-wrapper ${activeTab === 'past' ? 'is-pinned' : ''}`}
+      className="events-section-wrapper"
       ref={sectionRef}
     >
       <div className="events-header-fixed">
         <h2 className="section-title">Events</h2>
-        <div className="events-tabs">
-          <button 
-            className={`team-tab-btn ${activeTab === 'past' ? 'active' : ''}`}
-            onClick={() => setActiveTab('past')}
-          >
-            Past Events
-          </button>
-          <button 
-            className={`team-tab-btn ${activeTab === 'upcoming' ? 'active' : ''}`}
-            onClick={() => setActiveTab('upcoming')}
-          >
-            Upcoming Events
-          </button>
-        </div>
       </div>
 
       <div className="events-main-content">
-        {activeTab === 'upcoming' ? (
-          <motion.div 
-            className="coming-soon-box"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h3>Coming Soon</h3>
-            <p>Stay tuned for exciting upcoming events!</p>
-          </motion.div>
-        ) : (
-          <div className="gsap-track-viewport">
-            <div className="gsap-track" ref={trackRef}>
-              {pastEvents.map((event) => (
-                <div key={event.id} className="gsap-slide">
-                  <div className="modern-event-card">
-                    <div className="modern-img-container">
-                      <img src={event.img} alt={event.title} className="modern-event-img" />
-                    </div>
-                    <div className="modern-event-overlay">
-                      <span className="modern-event-date">{event.date}</span>
-                      <h4 className="modern-event-title">{event.title}</h4>
-                      <p className="modern-event-desc">{event.description}</p>
-                    </div>
+        <div className="gsap-track-viewport">
+          <div className="gsap-track" ref={trackRef}>
+            {pastEvents.map((event) => (
+              <div key={event.id} className="gsap-slide">
+                <div className="modern-event-card">
+                  <div className="modern-img-container">
+                    <img src={event.img} alt={event.title} className="modern-event-img" />
+                  </div>
+                  <div className="modern-event-overlay">
+                    <span className="modern-event-date">{event.date}</span>
+                    <h4 className="modern-event-title">{event.title}</h4>
+                    <p className="modern-event-desc">{event.description}</p>
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-        )}
+        </div>
       </div>
     </section>
   );
