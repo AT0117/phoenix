@@ -36,20 +36,7 @@ h1, h2, h3, h4, .brand-font {
   font-family: 'Cinzel', serif;
 }
 
-/* Background Grid Inspiration from 21st dev */
-.bg-grid {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 50px 50px;
-  z-index: -2;
-  pointer-events: none;
-}
+
 
 .bg-glow {
   position: fixed;

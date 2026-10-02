@@ -11,7 +11,6 @@ import './index.css';
 function App() {
   return (
     <>
-      <div className="bg-grid"></div>
       <div className="bg-glow"></div>
       <Particles />
       
